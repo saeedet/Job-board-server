@@ -1,13 +1,12 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { v4 } from 'uuid';
 
 @ObjectType({ isAbstract: true })
 @Entity({ abstract: true })
 export abstract class BaseEntity {
   @Field(() => ID)
-  @PrimaryKey({ type: 'uuid' })
-  id: string = v4();
+  @PrimaryKey()
+  id: number;
 
   @Field()
   @Property()

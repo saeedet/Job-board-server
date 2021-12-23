@@ -8,28 +8,35 @@ import { UpdateJobInput } from './dto/update-job.input';
 export class JobResolver {
   constructor(private readonly jobService: JobService) {}
 
-  // @Mutation(() => Job)
-  // createJob(@Args('createJobInput') createJobInput: CreateJobInput) {
-  //   return this.jobService.create(createJobInput);
-  // }
-
+  // --------------------  Query --------------------//
+  // Find all the jobs with applicants
   @Query(() => [Job])
   findAllJobs(): Promise<Job[]> {
     return this.jobService.findAllJobs();
   }
 
-  // @Query(() => Job, { name: 'job' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.jobService.findOne(id);
-  // }
+  // Find a single Job
+  @Query(() => Job, { nullable: true })
+  findOneJob(@Args('id') id: number): Promise<Job | null> {
+    return this.jobService.findOneJob(id);
+  }
 
-  // @Mutation(() => Job)
-  // updateJob(@Args('updateJobInput') updateJobInput: UpdateJobInput) {
-  //   return this.jobService.update(updateJobInput.id, updateJobInput);
-  // }
+  // -------------------- Mutation -------------------//
+  // Create a new Job
+  @Mutation(() => Job)
+  createJob(@Args('input') input: CreateJobInput): Promise<Job> {
+    return this.jobService.createJob(input);
+  }
 
-  // @Mutation(() => Job)
-  // removeJob(@Args('id', { type: () => Int }) id: number) {
-  //   return this.jobService.remove(id);
-  // }
+  // Update a job
+  @Mutation(() => Job)
+  updateJob(@Args('input') input: UpdateJobInput): Promise<Job> {
+    return this.jobService.updateJob(input);
+  }
+
+  // Remove a single Job
+  @Mutation(() => String)
+  removeOneJob(@Args('id') id: number): Promise<string> {
+    return this.jobService.removeOneJob(id);
+  }
 }
