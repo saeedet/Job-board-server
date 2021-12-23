@@ -3,8 +3,8 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from './baseEntity';
 import { Job } from './job.entity';
 
-ObjectType();
-Entity({ tableName: 'applicants' });
+@ObjectType()
+@Entity({ tableName: 'applicants' })
 export class Applicant extends BaseEntity {
   @Field(() => String)
   @Property()
@@ -14,23 +14,23 @@ export class Applicant extends BaseEntity {
   @Property()
   lastName: string;
 
-  @Field(() => Int)
-  @Property()
-  age: number;
-
   @Field(() => String)
   @Property()
   email: string;
+
+  @Field(() => Int)
+  @Property()
+  age: number;
 
   @Field(() => [Job])
   @ManyToMany(() => Job, (job) => job.applicants)
   jobs: Collection<Job> = new Collection<Job>(this);
 
-  constructor(firstName: string, lastName: string, age: number, email: string) {
+  constructor(firstName: string, lastName: string, email: string, age: number) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
-    this.age = age;
     this.email = email;
+    this.age = age;
   }
 }
