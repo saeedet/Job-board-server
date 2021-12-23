@@ -1,6 +1,6 @@
 import { Collection, Entity, ManyToMany, Property } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '../utils/entities/baseEntity';
+import { BaseEntity } from './baseEntity';
 import { Job } from './job.entity';
 
 ObjectType();
@@ -23,8 +23,8 @@ export class Applicant extends BaseEntity {
   email: string;
 
   @Field(() => [Job])
-  @ManyToMany(() => Job, (j: Job) => j.applicants)
-  jobs = new Collection<Job>(this);
+  @ManyToMany(() => Job, (job) => job.applicants)
+  jobs: Collection<Job> = new Collection<Job>(this);
 
   constructor(firstName: string, lastName: string, age: number, email: string) {
     super();

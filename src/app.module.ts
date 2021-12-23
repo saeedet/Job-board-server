@@ -11,12 +11,12 @@ import { JobModule } from './job/job.module';
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
-    MikroOrmModule.forRoot(),
     GraphQLModule.forRoot({
       debug: true,
       playground: true,
       autoSchemaFile: true,
     }),
+    MikroOrmModule.forRoot(),
     JobModule,
   ],
   controllers: [AppController],

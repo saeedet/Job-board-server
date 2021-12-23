@@ -13,9 +13,9 @@ export class JobResolver {
   //   return this.jobService.create(createJobInput);
   // }
 
-  @Query(() => [Job], { name: 'job' })
-  findAll() {
-    return this.jobService.findAll();
+  @Query(() => [Job])
+  findAllJobs(): Promise<Job[]> {
+    return this.jobService.findAllJobs();
   }
 
   // @Query(() => Job, { name: 'job' })

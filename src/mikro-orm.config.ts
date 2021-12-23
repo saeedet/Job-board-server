@@ -1,4 +1,4 @@
-import { Options } from '@mikro-orm/core';
+import { Options, ReflectMetadataProvider } from '@mikro-orm/core';
 import * as path from 'path';
 
 const config: Options = {
@@ -14,6 +14,7 @@ const config: Options = {
     path: path.join(__dirname, './migrarions'),
     pattern: /^[\w-]+\d+\.[tj]s$/,
   },
+  metadataProvider: ReflectMetadataProvider,
 };
 
 export default config;

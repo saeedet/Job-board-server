@@ -1,15 +1,21 @@
+import { EntityRepository } from '@mikro-orm/mysql';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CreateJobInput } from './dto/create-job.input';
 import { UpdateJobInput } from './dto/update-job.input';
+import { Job } from './entities/job.entity';
 
 @Injectable()
 export class JobService {
+  constructor(
+    @InjectRepository(Job) private readonly repo: EntityRepository<Job>,
+  ) {}
   // create(createJobInput: CreateJobInput) {
   //   return 'This action adds a new job';
   // }
 
-  findAll() {
-    return `This action returns all job`;
+  async findAllJobs(): Promise<Job[]> {
+    return await this.repo.findAll({ populate: ['applicants'] });
   }
 
   // findOne(id: number) {
