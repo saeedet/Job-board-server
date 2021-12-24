@@ -3,7 +3,6 @@ import { JobService } from '../services/job.service';
 import { Job } from '../entities/job.entity';
 import { CreateJobInput } from '../dto/job/create-job.input';
 import { UpdateJobInput } from '../dto/job/update-job.input';
-import { Applicant } from '../entities/applicant.entity';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 
 @Resolver(() => Job)
