@@ -2,11 +2,11 @@ import { wrap } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { CreateApplicantInput } from './dto/create-applicant.input';
-import { CreateJobInput } from './dto/create-job.input';
-import { UpdateJobInput } from './dto/update-job.input';
-import { Applicant } from './entities/applicant.entity';
-import { Job } from './entities/job.entity';
+import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
+import { CreateJobInput } from '../dto/job/create-job.input';
+import { UpdateJobInput } from '../dto/job/update-job.input';
+import { Applicant } from '../entities/applicant.entity';
+import { Job } from '../entities/job.entity';
 
 @Injectable()
 export class JobService {
@@ -20,11 +20,6 @@ export class JobService {
   // Find all the jobs with applicants
   async findAllJobs(): Promise<Job[]> {
     return await this.jobRepo.findAll({ populate: ['applicants'] });
-  }
-
-  // Find all Applicants
-  async findAllApplicants(): Promise<Applicant[]> {
-    return await this.applicantRepo.findAll({ populate: ['jobs'] });
   }
 
   // Find a single Job

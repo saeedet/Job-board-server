@@ -1,10 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { JobService } from './job.service';
-import { Job } from './entities/job.entity';
-import { CreateJobInput } from './dto/create-job.input';
-import { UpdateJobInput } from './dto/update-job.input';
-import { Applicant } from './entities/applicant.entity';
-import { CreateApplicantInput } from './dto/create-applicant.input';
+import { JobService } from '../services/job.service';
+import { Job } from '../entities/job.entity';
+import { CreateJobInput } from '../dto/job/create-job.input';
+import { UpdateJobInput } from '../dto/job/update-job.input';
+import { Applicant } from '../entities/applicant.entity';
+import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 
 @Resolver(() => Job)
 export class JobResolver {
@@ -15,12 +15,6 @@ export class JobResolver {
   @Query(() => [Job])
   findAllJobs(): Promise<Job[]> {
     return this.jobService.findAllJobs();
-  }
-
-  // Find all applicants
-  @Query(() => [Applicant])
-  findAllApplicants(): Promise<Applicant[]> {
-    return this.jobService.findAllApplicants();
   }
 
   // Find a single Job
