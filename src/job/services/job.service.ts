@@ -18,18 +18,18 @@ export class JobService {
 
   // --------------------  Query --------------------//
   // Find all the jobs with applicants
-  async findAllJobs(): Promise<Job[]> {
+  async findAll(): Promise<Job[]> {
     return await this.jobRepo.findAll({ populate: ['applicants'] });
   }
 
   // Find a single Job
-  async findOneJob(id: number): Promise<Job | null> {
+  async findOne(id: number): Promise<Job | null> {
     return await this.jobRepo.findOne({ id }, ['applicants']);
   }
 
   // -------------------- Mutation -------------------//
   // Create a new Job
-  async createJob(input: CreateJobInput): Promise<Job> {
+  async create(input: CreateJobInput): Promise<Job> {
     const newJob: Job = new Job(
       input.title,
       input.description,
@@ -40,20 +40,8 @@ export class JobService {
     return newJob;
   }
 
-  // Create new Applicant
-  async createApplicant(input: CreateApplicantInput): Promise<Applicant> {
-    const newApplicant: Applicant = new Applicant(
-      input.firstName,
-      input.lastName,
-      input.email,
-      input.age,
-    );
-    await this.applicantRepo.persistAndFlush(newApplicant);
-    return newApplicant;
-  }
-
   // Create a new applicant for a job
-  async createApplicantforJob(
+  async createApplicant(
     jobId: number,
     applicant: CreateApplicantInput,
   ): Promise<Job> {
@@ -70,7 +58,7 @@ export class JobService {
   }
 
   // Update a Job
-  async updateJob(input: UpdateJobInput): Promise<Job> {
+  async update(input: UpdateJobInput): Promise<Job> {
     const selectedJob: Job = await this.jobRepo.findOne({ id: input.id }, [
       'applicants',
     ]);
@@ -80,7 +68,7 @@ export class JobService {
   }
 
   // Remove one Job
-  async removeOneJob(id: number): Promise<string> {
+  async remove(id: number): Promise<string> {
     const selectedJob = await this.jobRepo.findOne({ id });
     if (!selectedJob) {
       return `Job with id:${id} does not exist!`;
