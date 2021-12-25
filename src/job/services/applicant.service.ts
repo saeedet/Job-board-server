@@ -21,7 +21,7 @@ export class ApplicantService {
   }
 
   // Find one applicant populated with jobs
-  async findOne(id: number): Promise<Applicant> {
+  async findOne(id: number): Promise<Applicant | null> {
     return await this.repo.findOne({ id }, ['jobs']);
   }
 

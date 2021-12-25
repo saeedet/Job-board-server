@@ -17,8 +17,8 @@ export class ApplicantResolver {
   }
 
   // Find an applicant populated with jobs
-  @Query(() => Applicant, { name: 'getApplicant' })
-  findOne(@Args('id') id: number): Promise<Applicant> {
+  @Query(() => Applicant, { name: 'getApplicant', nullable: true })
+  findOne(@Args('id') id: number): Promise<Applicant | null> {
     return this.applicantService.findOne(id);
   }
 
