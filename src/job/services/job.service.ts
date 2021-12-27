@@ -30,12 +30,8 @@ export class JobService {
 
   // Create a new Job
   async create(input: CreateJobInput): Promise<Job> {
-    const newJob: Job = new Job(
-      input.title,
-      input.description,
-      input.date,
-      input.location,
-    );
+    const { title, description, date, location } = input;
+    const newJob = new Job(title, description, date, location);
     await this.repo.persistAndFlush(newJob);
     return newJob;
   }
@@ -45,12 +41,8 @@ export class JobService {
     jobId: number,
     applicant: CreateApplicantInput,
   ): Promise<Job> {
-    const newApplicant: Applicant = new Applicant(
-      applicant.firstName,
-      applicant.lastName,
-      applicant.email,
-      applicant.age,
-    );
+    const { firstName, lastName, email, age } = applicant;
+    const newApplicant = new Applicant(firstName, lastName, email, age);
     const selectedJob: Job = await this.repo.findOne({ id: jobId });
     selectedJob.applicants.add(newApplicant);
     await this.repo.persistAndFlush(selectedJob);
@@ -59,9 +51,8 @@ export class JobService {
 
   // Update a Job
   async update(input: UpdateJobInput): Promise<Job> {
-    const selectedJob: Job = await this.repo.findOne({ id: input.id }, [
-      'applicants',
-    ]);
+    const { id } = input;
+    const selectedJob: Job = await this.repo.findOne({ id }, ['applicants']);
     wrap(selectedJob).assign(input);
     await this.repo.persistAndFlush(selectedJob);
     return selectedJob;
@@ -71,7 +62,7 @@ export class JobService {
   async remove(id: number): Promise<string> {
     const selectedJob: Job | null = await this.repo.findOne({ id });
     if (!selectedJob) {
-      return `Job with id:${id} does not exist!`;
+      throw new Error(`Job with id:${id} does not exist!`);
     }
     await this.repo.removeAndFlush(selectedJob);
     return 'Successfully deleted!';

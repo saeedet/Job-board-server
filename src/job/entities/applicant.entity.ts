@@ -15,7 +15,7 @@ export class Applicant extends BaseEntity {
   lastName: string;
 
   @Field(() => String)
-  @Property()
+  @Property({ unique: true })
   email: string;
 
   @Field(() => Int)

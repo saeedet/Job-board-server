@@ -29,13 +29,14 @@ export class UserService {
 
   // Create new User
   async create(input: CreateUserInput): Promise<User> {
-    const hashedPassword = await argon2.hash(input.password);
-    const newUser = new User(
-      input.firstName,
-      input.lastName,
-      input.email,
-      hashedPassword,
-    );
+    const { firstName, lastName, email, password } = input;
+    // Check for email uniqueness
+    const exist = await this.repo.count({ email });
+    if (exist > 0) {
+      throw new Error(`User with email:${email} already exists!`);
+    }
+    const hashedPassword = await argon2.hash(password);
+    const newUser = new User(firstName, lastName, email, hashedPassword);
     await this.repo.persistAndFlush(newUser);
     return newUser;
   }
@@ -45,7 +46,7 @@ export class UserService {
     const selectedUser = await this.repo.findOne({ id });
 
     if (!selectedUser) {
-      return `User with id:${id} does not exist!`;
+      throw new Error(`User with id:${id} does not exist!`);
     }
     await this.repo.removeAndFlush(selectedUser);
     return 'Successfully deleted!';
@@ -53,7 +54,16 @@ export class UserService {
 
   // Update a user
   async update(input: UpdateUserInput): Promise<User> {
-    const selectedUser = await this.repo.findOne({ id: input.id });
+    const { id, email } = input;
+    // Check for email uniqueness
+    if (email) {
+      const exist = await this.repo.count({ email });
+      if (exist > 0) {
+        throw new Error(`User with email:${email} already exists!`);
+      }
+    }
+
+    const selectedUser = await this.repo.findOne({ id });
     wrap(selectedUser).assign(input);
     await this.repo.persistAndFlush(selectedUser);
     return selectedUser;

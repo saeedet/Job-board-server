@@ -14,7 +14,7 @@ export class User extends BaseEntity {
   lastName: string;
 
   @Field(() => String)
-  @Property()
+  @Property({ unique: true })
   email: string;
 
   @Property()
