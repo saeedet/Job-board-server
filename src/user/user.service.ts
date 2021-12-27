@@ -21,8 +21,8 @@ export class UserService {
   }
 
   // Find a single User
-  async findOne(id: number): Promise<User | null> {
-    return await this.repo.findOne({ id });
+  async findOne(email: string): Promise<User | null> {
+    return await this.repo.findOne({ email });
   }
 
   // -------------------- Mutation -------------------//

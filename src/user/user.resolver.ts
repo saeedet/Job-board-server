@@ -18,8 +18,8 @@ export class UserResolver {
 
   // Find a single user
   @Query(() => User, { nullable: true, name: 'getUser' })
-  findOne(@Args('id') id: number): Promise<User | null> {
-    return this.userService.findOne(id);
+  findOne(@Args('email') email: string): Promise<User | null> {
+    return this.userService.findOne(email);
   }
 
   // -------------------- Mutation -------------------//
