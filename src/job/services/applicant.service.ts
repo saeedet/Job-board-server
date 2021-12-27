@@ -55,6 +55,7 @@ export class ApplicantService {
     if (!selectedApplicant) {
       return `Applicant with id:${id} does not exist!`;
     }
+    await this.repo.removeAndFlush(selectedApplicant);
     return 'Successfully deleted!';
   }
 }

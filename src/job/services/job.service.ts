@@ -73,6 +73,7 @@ export class JobService {
     if (!selectedJob) {
       return `Job with id:${id} does not exist!`;
     }
+    await this.repo.removeAndFlush(selectedJob);
     return 'Successfully deleted!';
   }
 }
