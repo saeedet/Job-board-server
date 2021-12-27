@@ -31,6 +31,7 @@
     "@nestjs/graphql": "^9.1.2",
     "@nestjs/platform-express": "^8.0.0",
     "apollo-server-express": "^3.5.0",
+    "argon2": "^0.28.3",
     "graphql": "^15.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
