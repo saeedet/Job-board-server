@@ -1,6 +1,7 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { jwtConstants } from './utils/constants/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

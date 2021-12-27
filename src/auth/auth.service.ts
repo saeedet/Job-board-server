@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import * as argon2 from 'argon2';
 import { LoginResponse } from 'src/utils/interfaces/interfaces';
