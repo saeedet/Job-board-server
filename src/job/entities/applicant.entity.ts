@@ -1,6 +1,6 @@
 import { Collection, Entity, ManyToMany, Property } from '@mikro-orm/core';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/utils/entities/baseEntity';
+import { BaseEntity } from './../../utils/entities/baseEntity.entity';
 import { Job } from './job.entity';
 
 @ObjectType()

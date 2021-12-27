@@ -1,6 +1,6 @@
 import { Entity, Property } from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/utils/entities/baseEntity';
+import { BaseEntity } from './../../utils/entities/baseEntity.entity';
 
 @ObjectType()
 @Entity({ tableName: 'users' })
