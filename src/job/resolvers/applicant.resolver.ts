@@ -1,7 +1,4 @@
-import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { MyContext } from 'src/utils/interfaces/interfaces';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 import { UpdateApplicantInput } from '../dto/applicant/update-applicant.input';
 import { Applicant } from '../entities/applicant.entity';

@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { JobModule } from './job/job.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { MyContext } from './utils/interfaces/interfaces';
+import { MyContext } from './utils/types/MyContext';
 
 @Module({
   imports: [

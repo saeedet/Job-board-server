@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as argon2 from 'argon2';
-import { LoginResponse } from 'src/utils/interfaces/interfaces';
+import { LoginResponse } from 'src/utils/types/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/utils/constants/constants';
 import { User } from 'src/user/entities/user.entity';
@@ -14,21 +14,29 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // Validate User
-  async validateUser(
+  // Login User
+  async login(
     email: string,
     password: string,
-  ): Promise<LoginResponse | null> {
+    res: Response,
+  ): Promise<LoginResponse> {
     const user = await this.userService.findOne(email);
-    if (user) {
-      const valid = await argon2.verify(user.password, password);
-      if (valid) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password, createdAt, updatedAt, ...result } = user;
-        return result;
-      }
+    if (!user) {
+      throw new Error('Wrong username or password!');
     }
-    return null;
+    const valid = await argon2.verify(user.password, password);
+    if (!valid) {
+      throw new Error('Wrong username or password!');
+    }
+
+    // Login successful
+    const persistToken = this.createPersistToken(user);
+    this.attachPersistToken(res, persistToken);
+    const accessToken = this.createAccessToken(user);
+    return {
+      accessToken,
+      user,
+    };
   }
 
   // Create Access Token for User
@@ -121,20 +129,5 @@ export class AuthService {
       message: '',
       accessToken: freshAccessToken,
     });
-  }
-
-  // Login User
-  async login(user: any) {
-    const payload = { username: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload, {
-        expiresIn: jwtConstants.accessTokenExp,
-        secret: jwtConstants.accessTokenSecret,
-      }),
-      persist_token: this.jwtService.sign(payload, {
-        expiresIn: jwtConstants.persistTokenExp,
-        secret: jwtConstants.persistTokenSecret,
-      }),
-    };
   }
 }
