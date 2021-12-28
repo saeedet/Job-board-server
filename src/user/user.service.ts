@@ -20,9 +20,14 @@ export class UserService {
     return await this.repo.findAll();
   }
 
-  // Find a single User
+  // Find a single User by Email
   async findOne(email: string): Promise<User | null> {
     return await this.repo.findOne({ email });
+  }
+
+  // Find a single user by ID
+  async findOneById(id: number): Promise<User | null> {
+    return await this.repo.findOne({ id });
   }
 
   // -------------------- Mutation -------------------//

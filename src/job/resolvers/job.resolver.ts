@@ -4,8 +4,6 @@ import { Job } from '../entities/job.entity';
 import { CreateJobInput } from '../dto/job/create-job.input';
 import { UpdateJobInput } from '../dto/job/update-job.input';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
-import { UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 
 @Resolver(() => Job)
 export class JobResolver {
@@ -14,7 +12,6 @@ export class JobResolver {
   // --------------------  Query --------------------//
 
   // Find all the jobs populated with applicants
-  @UseGuards(LocalAuthGuard)
   @Query(() => [Job], { name: 'getJobs' })
   findAll(): Promise<Job[]> {
     return this.jobService.findAll();
