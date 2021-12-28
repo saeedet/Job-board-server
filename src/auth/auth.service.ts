@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as argon2 from 'argon2';
-import { LoginResponse } from 'src/utils/types/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/utils/constants/constants';
 import { User } from 'src/user/entities/user.entity';
 import { Request, Response } from 'express';
+import { LoginResponse } from 'src/utils/types/LoginResponse';
 
 @Injectable()
 export class AuthService {
@@ -30,9 +30,9 @@ export class AuthService {
     }
 
     // Login successful
+    const accessToken = this.createAccessToken(user);
     const persistToken = this.createPersistToken(user);
     this.attachPersistToken(res, persistToken);
-    const accessToken = this.createAccessToken(user);
     return {
       accessToken,
       user,
