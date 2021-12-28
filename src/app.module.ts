@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { JobModule } from './job/job.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { MyContext } from './utils/interfaces/interfaces';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
         origin: 'http://localhost:3000',
         credentials: true,
       },
+      context: ({ req, res }: MyContext) => ({ req, res }),
     }),
     MikroOrmModule.forRoot(),
     JobModule,

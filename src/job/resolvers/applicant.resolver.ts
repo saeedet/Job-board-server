@@ -1,4 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { MyContext } from 'src/utils/interfaces/interfaces';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 import { UpdateApplicantInput } from '../dto/applicant/update-applicant.input';
 import { Applicant } from '../entities/applicant.entity';
@@ -11,8 +14,14 @@ export class ApplicantResolver {
   // --------------------  Query --------------------//
 
   // Find all applicants
+  // @UseGuards(JwtAuthGuard)
   @Query(() => [Applicant], { name: 'getApplicants' })
-  findAll(): Promise<Applicant[]> {
+  findAll(@Context() context: any): Promise<Applicant[]> {
+    const auth = 'asd';
+    console.log(context.randomValue);
+    if (!auth) {
+      return null;
+    }
     return this.applicantService.findAll();
   }
 

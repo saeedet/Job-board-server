@@ -20,6 +20,9 @@ export class User extends BaseEntity {
   @Property()
   password: string;
 
+  @Property({ default: 0 })
+  tokenVersion: number;
+
   constructor(
     firstname: string,
     lastName: string,
