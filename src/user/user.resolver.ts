@@ -16,10 +16,16 @@ export class UserResolver {
     return this.userService.findAll();
   }
 
-  // Find a single user
+  // Find a single user by Email
   @Query(() => User, { nullable: true, name: 'getUser' })
   findOne(@Args('email') email: string): Promise<User | null> {
     return this.userService.findOne(email);
+  }
+
+  // Find a single user by ID
+  @Query(() => User, { name: 'whoami' })
+  findOneById(@Args('id') id: string): Promise<User> {
+    return this.userService.findOneById(parseInt(id));
   }
 
   // -------------------- Mutation -------------------//
