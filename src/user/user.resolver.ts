@@ -1,4 +1,8 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from 'src/auth/decorators/user.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtPayload } from 'src/utils/types/JwtPayload';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -22,10 +26,11 @@ export class UserResolver {
     return this.userService.findOne(email);
   }
 
-  // Find a single user by ID
-  @Query(() => User, { name: 'whoami' })
-  findOneById(@Args('id') id: string): Promise<User> {
-    return this.userService.findOneById(parseInt(id));
+  // Find user info
+  @UseGuards(JwtAuthGuard)
+  @Query(() => User, { name: 'whoAmI', nullable: true })
+  me(@CurrentUser() user: JwtPayload) {
+    return this.userService.findOneById(user.userId);
   }
 
   // -------------------- Mutation -------------------//

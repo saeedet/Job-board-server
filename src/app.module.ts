@@ -16,10 +16,7 @@ import { MyContext } from './utils/types/MyContext';
       playground: true,
       //---
       autoSchemaFile: true,
-      cors: {
-        origin: 'http://localhost:3000',
-        credentials: true,
-      },
+      cors: false,
       context: ({ req, res }: MyContext) => ({ req, res }),
     }),
     MikroOrmModule.forRoot(),

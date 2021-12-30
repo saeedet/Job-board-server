@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { LoginResponse } from 'src/utils/types/LoginResponse';
 import { MyContext } from 'src/utils/types/MyContext';
 import { AuthService } from './auth.service';
@@ -12,9 +12,16 @@ export class AuthResolver {
   @Mutation(() => LoginResponse, { name: 'login' })
   login(
     @Args('input') input: LoginInput,
-    @Context() ctx: MyContext,
+    @Context() { res }: MyContext,
   ): Promise<LoginResponse> {
     const { email, password } = input;
-    return this.authService.login(email, password, ctx.res);
+    return this.authService.login(email, password, res);
+  }
+
+  // Logout user
+  @Mutation(() => Boolean, { name: 'logout' })
+  logout(@Context() { res }: MyContext): boolean {
+    this.authService.attachPersistToken(res, '');
+    return true;
   }
 }

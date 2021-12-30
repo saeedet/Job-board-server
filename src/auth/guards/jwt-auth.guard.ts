@@ -6,19 +6,14 @@ import { AuthenticationError } from 'apollo-server-express';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext();
-    return super.canActivate(new ExecutionContextHost([req]));
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  canActivate(context: ExecutionContext) {
+    // Add your custom authentication logic here
+    // for example, call super.logIn(request) to establish a session.
+    return super.canActivate(context);
   }
-
-  handleRequest(err: any, user: any) {
-    if (err || !user) {
-      throw err || new AuthenticationError('GqlAuthGuard');
-    }
-    return user;
+  getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
   }
 }

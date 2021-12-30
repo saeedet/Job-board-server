@@ -23,7 +23,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('refresh_token')
+  @Get('refresh_token')
   refreshToken(@Request() req: Req, @Response() res: Res) {
     return this.authService.refreshToken(req, res);
   }

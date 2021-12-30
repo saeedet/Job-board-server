@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import * as argon2 from 'argon2';
 import { UpdateUserInput } from './dto/update-user.input';
 import { wrap } from '@mikro-orm/core';
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
