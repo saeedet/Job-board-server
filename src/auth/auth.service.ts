@@ -6,6 +6,7 @@ import { jwtConstants } from 'src/utils/constants/constants';
 import { User } from 'src/user/entities/user.entity';
 import { Request, Response } from 'express';
 import { LoginResponse } from 'src/utils/types/LoginResponse';
+import { AuthenticationError } from 'apollo-server-express';
 
 @Injectable()
 export class AuthService {
@@ -22,11 +23,11 @@ export class AuthService {
   ): Promise<LoginResponse> {
     const user = await this.userService.findOne(email);
     if (!user) {
-      throw new Error('Wrong username or password!');
+      throw new AuthenticationError('Wrong username or password');
     }
     const valid = await argon2.verify(user.password, password);
     if (!valid) {
-      throw new Error('Wrong username or password!');
+      throw new AuthenticationError('Wrong username or password');
     }
 
     // Login successful
