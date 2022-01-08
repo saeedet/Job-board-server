@@ -60,11 +60,12 @@ export class JobService {
 
   // Delete a Job
   async remove(id: number): Promise<string> {
-    const selectedJob: Job | null = await this.repo.findOne({ id });
-    if (!selectedJob) {
-      throw new Error(`Job with id:${id} does not exist!`);
+    try {
+      const selectedJob: Job = await this.repo.findOneOrFail({ id });
+      await this.repo.removeAndFlush(selectedJob);
+      return 'Successfully deleted!';
+    } catch (err) {
+      return err.message;
     }
-    await this.repo.removeAndFlush(selectedJob);
-    return 'Successfully deleted!';
   }
 }
