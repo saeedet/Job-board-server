@@ -4,8 +4,7 @@ import { Job } from '../entities/job.entity';
 import { CreateJobInput } from '../dto/job/create-job.input';
 import { UpdateJobInput } from '../dto/job/update-job.input';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ParseIntPipe } from '@nestjs/common';
 
 @Resolver(() => Job)
 export class JobResolver {
@@ -14,7 +13,6 @@ export class JobResolver {
   // --------------------  Query --------------------//
 
   // Find all the jobs populated with applicants
-  // @UseGuards(JwtAuthGuard)
   @Query(() => [Job], { name: 'getJobs' })
   findAll(): Promise<Job[]> {
     return this.jobService.findAll();
@@ -22,7 +20,7 @@ export class JobResolver {
 
   // Find a single Job
   @Query(() => Job, { nullable: true, name: 'getJob' })
-  findOne(@Args('id') id: number): Promise<Job | null> {
+  findOne(@Args('id', ParseIntPipe) id: number): Promise<Job | null> {
     return this.jobService.findOne(id);
   }
 
@@ -37,7 +35,7 @@ export class JobResolver {
   // Create a new applicant for a job
   @Mutation(() => Job, { name: 'createApplicantforJob' })
   createApplicant(
-    @Args('jobId') jobId: number,
+    @Args('jobId', ParseIntPipe) jobId: number,
     @Args('applicant') applicant: CreateApplicantInput,
   ): Promise<Job> {
     return this.jobService.createApplicant(jobId, applicant);
@@ -51,7 +49,7 @@ export class JobResolver {
 
   // Delete a single Job
   @Mutation(() => String, { name: 'deleteJob' })
-  remove(@Args('id') id: number): Promise<string> {
+  remove(@Args('id', ParseIntPipe) id: number): Promise<string> {
     return this.jobService.remove(id);
   }
 }

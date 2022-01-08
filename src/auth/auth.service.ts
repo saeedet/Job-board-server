@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/utils/constants/constants';
-import { User } from 'src/user/entities/user.entity';
+import { jwtConstants } from '../utils/constants/constants';
+import { User } from '../user/entities/user.entity';
 import { Request, Response } from 'express';
-import { LoginResponse } from 'src/utils/types/LoginResponse';
-import { AuthenticationError } from 'apollo-server-express';
+import { LoginResponse } from '../utils/types/LoginResponse';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +22,11 @@ export class AuthService {
   ): Promise<LoginResponse> {
     const user = await this.userService.findOne(email);
     if (!user) {
-      throw new AuthenticationError('Wrong username or password');
+      throw new BadRequestException('Wrong username or password');
     }
     const valid = await argon2.verify(user.password, password);
     if (!valid) {
-      throw new AuthenticationError('Wrong username or password');
+      throw new BadRequestException('Wrong username or password');
     }
 
     // Login successful

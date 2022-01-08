@@ -6,7 +6,6 @@ import { User } from './entities/user.entity';
 import * as argon2 from 'argon2';
 import { UpdateUserInput } from './dto/update-user.input';
 import { wrap } from '@mikro-orm/core';
-import { Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -50,7 +49,6 @@ export class UserService {
   // Delete a User
   async remove(id: number): Promise<string> {
     const selectedUser = await this.repo.findOne({ id });
-
     if (!selectedUser) {
       throw new Error(`User with id:${id} does not exist!`);
     }
@@ -68,7 +66,6 @@ export class UserService {
         throw new Error(`User with email:${email} already exists!`);
       }
     }
-
     const selectedUser = await this.repo.findOne({ id });
     wrap(selectedUser).assign(input);
     await this.repo.persistAndFlush(selectedUser);

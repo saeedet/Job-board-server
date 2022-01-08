@@ -1,6 +1,6 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { LoginResponse } from 'src/utils/types/LoginResponse';
-import { MyContext } from 'src/utils/types/MyContext';
+import { LoginResponse } from '../utils/types/LoginResponse';
+import { MyContext } from '../utils/types/MyContext';
 import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login-user.input';
 

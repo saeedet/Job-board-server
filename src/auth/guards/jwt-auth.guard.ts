@@ -1,9 +1,6 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthenticationError } from 'apollo-server-express';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
