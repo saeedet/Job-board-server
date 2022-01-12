@@ -4,6 +4,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 import { CreateJobInput } from '../dto/job/create-job.input';
+import { JobResponse } from '../dto/job/job-response';
 import { UpdateJobInput } from '../dto/job/update-job.input';
 import { Applicant } from '../entities/applicant.entity';
 import { Job } from '../entities/job.entity';
@@ -22,8 +23,17 @@ export class JobService {
   }
 
   // Find a single Job
-  async findOne(id: number): Promise<Job | null> {
-    return await this.repo.findOne({ id }, ['applicants']);
+  async findOne(id: number): Promise<JobResponse> {
+    try {
+      const job = await this.repo.findOneOrFail({ id }, ['applicants']);
+      return {
+        job,
+      };
+    } catch (err) {
+      return {
+        error: err.message,
+      };
+    }
   }
 
   // -------------------- Mutation -------------------//

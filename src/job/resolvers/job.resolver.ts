@@ -5,6 +5,7 @@ import { CreateJobInput } from '../dto/job/create-job.input';
 import { UpdateJobInput } from '../dto/job/update-job.input';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 import { ParseIntPipe } from '@nestjs/common';
+import { JobResponse } from '../dto/job/job-response';
 
 @Resolver(() => Job)
 export class JobResolver {
@@ -19,8 +20,8 @@ export class JobResolver {
   }
 
   // Find a single Job
-  @Query(() => Job, { nullable: true, name: 'getJob' })
-  findOne(@Args('id', ParseIntPipe) id: number): Promise<Job | null> {
+  @Query(() => JobResponse, { nullable: true, name: 'getJob' })
+  findOne(@Args('id', ParseIntPipe) id: number): Promise<JobResponse> {
     return this.jobService.findOne(id);
   }
 
