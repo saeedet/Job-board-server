@@ -2,9 +2,9 @@ import { wrap } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/mysql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { GraphQLError } from 'graphql';
 import { CreateApplicantInput } from '../dto/applicant/create-applicant.input';
 import { CreateJobInput } from '../dto/job/create-job.input';
-import { JobResponse } from '../dto/job/job-response';
 import { UpdateJobInput } from '../dto/job/update-job.input';
 import { Applicant } from '../entities/applicant.entity';
 import { Job } from '../entities/job.entity';
@@ -23,17 +23,12 @@ export class JobService {
   }
 
   // Find a single Job
-  async findOne(id: number): Promise<JobResponse> {
-    try {
-      const job = await this.repo.findOneOrFail({ id }, ['applicants']);
-      return {
-        job,
-      };
-    } catch (err) {
-      return {
-        error: err.message,
-      };
+  async findOne(id: number): Promise<Job> {
+    const job = await this.repo.findOne({ id }, ['applicants']);
+    if (!job) {
+      throw new GraphQLError(`Couldn't find job with id: ${id}`);
     }
+    return job;
   }
 
   // -------------------- Mutation -------------------//

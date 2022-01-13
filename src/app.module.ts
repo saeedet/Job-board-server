@@ -7,6 +7,7 @@ import { JobModule } from './job/job.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MyContext } from './utils/types/MyContext';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
@@ -16,6 +17,12 @@ import { MyContext } from './utils/types/MyContext';
       playground: true,
       //---
       autoSchemaFile: true,
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.message || error.extensions.exception.response.message,
+        };
+        return graphQLFormattedError;
+      },
       cors: false,
       context: ({ req, res }: MyContext) => ({ req, res }),
     }),
